@@ -1,5 +1,6 @@
 from datacenter.models import *
 from random import choice
+from django.core.exceptions import ObjectDoesNotExist
 
 vanya = Schoolkid.objects.get(full_name='Фролов Иван Григорьевич')
 feo = Schoolkid.objects.filter(full_name__contains='Голубев Феофан')
@@ -11,13 +12,20 @@ COMMENDATIONS = ('Молодец!', 'Отлично!', 'Хорошо!', 'Гор�
 
 
 def get_schoolkid_from_name(name):
-    schoolkid_query = Schoolkid.objects.filter(full_name__contains=name)
-    if len(schoolkid_query) > 1:
-        raise TypeError(f'Учеников "{name}" больше одного. Уточните имя ученика!')
-    if not schoolkid_query:
-        raise TypeError( f'Имя "{name}" не найдено.')
-    schoolkid = schoolkid_query[0]
-    return schoolkid
+    try:
+        schoolkid = Schoolkid.objects.get(full_name=name)
+        return schoolkid
+    except ObjectDoesNotExist:
+        raise ObjectDoesNotExist(f'Проверь правильность написания имени. Имя "{name}" не существует. \n'
+                                 f'Имя нужно указывать полностью (ФИО) с заглавных букв.')
+
+    # schoolkid_query = Schoolkid.objects.filter(full_name__contains=name)
+    # if len(schoolkid_query) > 1:
+    #     raise TypeError(f'Учеников "{name}" больше одного. Уточните имя ученика!')
+    # if not schoolkid_query:
+    #     raise TypeError( f'Имя "{name}" не найдено.')
+    # schoolkid = schoolkid_query[0]
+    # return schoolkid
 
 
 def fix_marks(name):
@@ -49,5 +57,6 @@ def create_commendation(name, subject):
                                         teacher_id=schoolkid_subject.teacher_id, text=choice(COMMENDATIONS))
             break
         count += 1
+
 
 create_commendation('ваня', 'Русский язык')
