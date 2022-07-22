@@ -13,9 +13,9 @@ COMMENDATIONS = ('Молодец!', 'Отлично!', 'Хорошо!', 'Гор�
 def get_schoolkid_from_name(name):
     schoolkid_query = Schoolkid.objects.filter(full_name__contains=name)
     if len(schoolkid_query) > 1:
-        raise f'Учеников "{name}" больше одного. Уточните имя ученика!'
+        raise TypeError(f'Учеников "{name}" больше одного. Уточните имя ученика!')
     if not schoolkid_query:
-        raise f'Имя "{name}" не найдено.'
+        raise TypeError( f'Имя "{name}" не найдено.')
     schoolkid = schoolkid_query[0]
     return schoolkid
 
@@ -50,4 +50,4 @@ def create_commendation(name, subject):
             break
         count += 1
 
-create_commendation('Фролов Иван', 'Русский язык')
+create_commendation('ваня', 'Русский язык')
