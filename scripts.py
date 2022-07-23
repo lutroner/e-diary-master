@@ -36,17 +36,15 @@ def create_commendation(name, subject):
     schoolkid = get_schoolkid_from_name(name)
     schoolkid_class_lessons = Lesson.objects.filter(year_of_study=schoolkid.year_of_study,
                                                     group_letter=schoolkid.group_letter)
-    count = 0
     while True:
         try:
-            schoolkid_subject = schoolkid_class_lessons.filter(subject__title=subject).order_by('-date')[count]
+            random_schoolkid_lesson = schoolkid_class_lessons.filter(subject__title=subject).order_by('?').first()
         except IndexError:
             raise IndexError(f'Проверь правильность написания названия предмета.'
                              f'Предмет "{subject}" не существует.')
-        if not Commendation.objects.filter(created=schoolkid_subject.date, schoolkid_id=schoolkid.id,
-                                           subject_id=schoolkid_subject.subject_id):
-            Commendation.objects.create(created=schoolkid_subject.date, schoolkid_id=schoolkid.id,
-                                        subject_id=schoolkid_subject.subject_id,
-                                        teacher_id=schoolkid_subject.teacher_id, text=choice(COMMENDATIONS))
+        if not Commendation.objects.filter(created=random_schoolkid_lesson.date, schoolkid_id=schoolkid.id,
+                                           subject_id=random_schoolkid_lesson.subject_id):
+            Commendation.objects.create(created=random_schoolkid_lesson.date, schoolkid_id=schoolkid.id,
+                                        subject_id=random_schoolkid_lesson.subject_id,
+                                        teacher_id=random_schoolkid_lesson.teacher_id, text=choice(COMMENDATIONS))
             break
-        count += 1
