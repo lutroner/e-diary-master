@@ -39,13 +39,13 @@ $ fix_marks(name)
 4. Команда для удаления всех замечаний:
 
 ```console
-remove_chastisements(name)
+$ remove_chastisements(name)
 ```
 
 5. Чтобы добавить похвалу для случайного урока заданного предмета заданного ученика:
 
 ```console
-create_commendation(name, subject):
+$ create_commendation(name, subject):
 ```
 
 где `subject` - название предмета с заглавной буквы, а `name`  ФИО ученика полностью с заглавных букв.
