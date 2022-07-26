@@ -15,6 +15,8 @@ def get_schoolkid_from_name(name):
     except ObjectDoesNotExist:
         raise ObjectDoesNotExist(f'Проверь правильность написания имени. Имя "{name}" не существует. \n'
                                  f'Имя нужно указывать полностью (ФИО) с заглавных букв.')
+    except MultipleObjectsReturned:
+        raise MultipleObjectsReturned(f'Найдено несколько имен "{name}"')
 
 
 def fix_marks(name):
